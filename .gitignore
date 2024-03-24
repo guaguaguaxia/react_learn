@@ -1,0 +1,16 @@
+venv
+.idea
+UNKNOWN.egg-info
+dist
+build
+Cambly_Courseware
+TOHO/log
+TOHO/data
+klock/log
+klock/data
+pokemon/log
+pokemon/data
+data
+excel
+main_taobao.spec
+chromedriver.exe
