@@ -13,7 +13,7 @@ const channelStore = createSlice({
   },
 });
 
-const {setChannels} = channelStore.actions
+const { setChannels } = channelStore.actions
 
 const fetchChannelList = () => {
   return async (dispatch) => {
