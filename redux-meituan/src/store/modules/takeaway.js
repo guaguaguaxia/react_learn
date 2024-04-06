@@ -16,17 +16,32 @@ const foodsStore = createSlice({
       state.activeIndex = action.payload;
     },
     addCart(state, action) {
-      const item = state.cartList.find(item => item.id === action.payload.id);
+      const item = state.cartList.find((item) => item.id === action.payload.id);
       if (item) {
         item.count++;
       } else {
         state.cartList.push({ ...action.payload, count: 1 });
       }
     },
+    increCount(state, action) {
+      const item = state.cartList.find((item) => item.id === action.payload.id);
+      item.count++;
+    },
+    decreCount(state, action) {
+      const item = state.cartList.find((item) => item.id === action.payload.id);
+      if (item.count === 0) {
+        return;
+      }
+      item.count--;
+    },
+    clearCart(state) {
+      state.cartList = [];
+    }
   },
 });
 
-const { setFoodsList, changeActiveIndex, addCart } = foodsStore.actions;
+const { setFoodsList, changeActiveIndex, addCart, increCount, decreCount, clearCart } =
+  foodsStore.actions;
 
 const fetchFoodsList = () => {
   return async (dispatch) => {
@@ -35,7 +50,7 @@ const fetchFoodsList = () => {
   };
 };
 
-export { fetchFoodsList, changeActiveIndex, addCart };
+export { fetchFoodsList, changeActiveIndex, addCart, increCount, decreCount, clearCart };
 
 const reducer = foodsStore.reducer;
 

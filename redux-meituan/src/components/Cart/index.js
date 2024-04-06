@@ -2,10 +2,20 @@ import classNames from "classnames";
 import Count from "../Count";
 import "./index.scss";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {
+  increCount,
+  decreCount,
+  clearCart,
+} from "../../store/modules/takeaway";
 
 const Cart = () => {
-  const cart = [];
   const { cartList } = useSelector((state) => state.foods);
+  const dispatch = useDispatch();
+  const totalPrice = cartList.reduce(
+    (acc, cur) => acc + cur.price * cur.count,
+    0
+  );
 
   return (
     <div className="cartContainer">
@@ -14,7 +24,7 @@ const Cart = () => {
       <div className="cart">
         {/* fill 添加fill类名可以切换购物车状态*/}
         {/* 购物车数量 */}
-        <div className={classNames("icon")}>
+        <div className={classNames("icon", cartList.length > 0 && "fill")}>
           {cartList.length > 0 && (
             <div className="cartCornerMark">{cartList.length}</div>
           )}
@@ -24,28 +34,30 @@ const Cart = () => {
           <div className="price">
             <span className="payableAmount">
               <span className="payableAmountUnit">¥</span>
-              {0.0}
+              {totalPrice.toFixed(2)}
             </span>
           </div>
           <span className="text">预估另需配送费 ¥5</span>
         </div>
         {/* 结算 or 起送 */}
-        {false ? (
+        {cartList.length > 0 ? (
           <div className="goToPreview">去结算</div>
         ) : (
           <div className="minFee">¥20起送</div>
         )}
       </div>
       {/* 添加visible类名 div会显示出来 */}
-      <div className={classNames("cartPanel")}>
+      <div className={classNames("cartPanel", "visible")}>
         <div className="header">
           <span className="text">购物车</span>
-          <span className="clearCart">清空购物车</span>
+          <span className="clearCart" onClick={() => dispatch(clearCart())}>
+            清空购物车
+          </span>
         </div>
 
         {/* 购物车列表 */}
         <div className="scrollArea">
-          {cart.map((item) => {
+          {cartList.map((item) => {
             return (
               <div className="cartItem" key={item.id}>
                 <img className="shopPic" src={item.picture} alt="" />
@@ -59,7 +71,11 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="skuBtnWrapper btnGroup">
-                  <Count count={item.count} />
+                  <Count
+                    count={item.count}
+                    onPlus={() => dispatch(increCount({ id: item.id }))}
+                    onMinus={() => dispatch(decreCount({ id: item.id }))}
+                  />
                 </div>
               </div>
             );
