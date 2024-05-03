@@ -1,5 +1,5 @@
 import { TabBar } from 'antd-mobile'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import {
   BillOutline,
   CalculatorOutline,
@@ -12,7 +12,7 @@ import { getBillList } from '@/store/modules/billStore'
 
 const tabs = [
   {
-    key: '/',
+    key: '/month',
     title: '月度账单',
     icon: <BillOutline />,
   },
@@ -34,13 +34,20 @@ const Layout = () => {
     dispatch(getBillList())
   }, [dispatch])
 
+  const navigate =  useNavigate()
+
+  const switchRouter = (path) => {
+    console.log(path)
+    navigate(path)
+  }
+
   return (
     <div className="layout">
       <div className="container">
         <Outlet />
       </div>
       <div className="footer">
-        <TabBar>
+        <TabBar onChange={switchRouter}>
             {tabs.map((item) => (
                 <TabBar.Item  key={item.key} icon={item.icon} title={item.title} ></TabBar.Item>
             ))}
