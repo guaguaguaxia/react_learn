@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
-
+import DailyBill from './components/DayBill'
 
 const Month = () => {
     const billList = useSelector(state => state.bill.billList)
@@ -87,10 +87,10 @@ const Month = () => {
                     onConfirm={onConfirm}
                     onClose={() => setDateVisible(false)}
                     max={new Date()} 
-                    
                     />
                         
                 </div>
+                <DailyBill />
             </div>
         </div>
     )
